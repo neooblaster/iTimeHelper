@@ -7,19 +7,28 @@
 /** ---																																						--- **
 /** ---		AUTEUR 	: Nicolas DUPRE																												--- **
 /** ---																																						--- **
-/** ---		RELEASE	: 09.01.2016																													--- **
+/** ---		RELEASE	: 20.10.2016																													--- **
 /** ---																																						--- **
-/** ---		VERSION	: 1.2																																--- **
+/** ---		VERSION	: 1.3 NDU																														--- **
 /** ---																																						--- **
 /** ---																																						--- **
 /** --- 														-----------------------------															--- **
 /** --- 															 { C H A N G E L O G } 																--- **
 /** --- 														-----------------------------															--- **
 /** ---																																						--- **
+/** ---		VERSION 1.3 : 20.10.2016 : NDU																										--- **
+/** ---		------------------------------																										--- **
+/** ---			- Remplacement du la greffe par notation pointée par la méthode addEventListener									--- **
+/** ---				>  Création de la fonction iTimeHelper_init																				--- **
+/** ---																																						--- **
+/** ---			- Modification du process de déclenchement de l'evenement onchange													--- **
+/** ---				> Utilisation de l'objet Event  + dispatchEvent																			--- **
+/** ---																																						--- **
+/** ---																																						--- **
 /** ---		VERSION 1.2 : 09.01.2016																												--- **
 /** ---		------------------------																												--- **
+/** ---			- Prise en charge des valeurs numérique en guise de boolean																--- **
 /** ---																																						--- **
-/** ---			- Prise en charge des valeurs numérique en guide de boolean																--- **
 /** ---																																						--- **
 /** ---		VERSION 1.1 : 26.07.2015																												--- **
 /** ---		------------------------																												--- **
@@ -64,7 +73,7 @@
 	sep-auto 		:: Autocomplétion  du séparateur HH et MM - Par défaut : true
 	pattern-auto	:: Ajout automatique du pattern de l'heure pour les cas "required" - Par défaut : true
 	octm-flush		:: oncontextmenu (Right Click) vide le champs : Par défaut : true
-	never-wrong		:: Indique si le champs s'auto-corrige par la valeur nerver-value lorsque le pattern n'est pas bon - Par défaut : false
+	never-wrong		:: Indique si le champs s'auto-corrige par la valeur never-value lorsque le pattern n'est pas bon - Par défaut : false
 	never-value		:: Valeur à appliquer lorsque c'est faux	
 	
 	Si required et pas de pattern, alors auto-pattern
@@ -102,13 +111,18 @@ function iTimeHelper_autocorrect(target, pattern, never_value){
 	
 	if(!pattern.test(target.value)){
 		target.value = never_value;
+		
 		/** Si changement effectué, alors il faut invoquer le changement **/
-		target.onchange();
+		// Create a new 'change' event
+		var event = new Event('change');
+		
+		// Dispatch it.
+		target.dispatchEvent(event);
 	}
 }
 
 /** Moteur de conversion automatique des champs de type iTime une fois la page chargée **/
-document.onreadystatechange = function(){
+function iTimeHelper_init(){
 	if(document.readyState === 'complete'){
 		/** Récupérer tout les boutons de type iTime **/
 		var iTime_buttons = document.querySelectorAll('[type=iTime]');
@@ -176,7 +190,7 @@ document.onreadystatechange = function(){
 					iTime_buttons[i].setAttribute('placeholder', never_value);
 				}
 				
-				/** Si value not exist appliquer la never_value**/
+				/** Si value not exist appliquer la never_value **/
 				if(iTime_buttons[i].getAttribute('value') === null){
 					iTime_buttons[i].setAttribute('value', never_value);
 				}
@@ -189,4 +203,6 @@ document.onreadystatechange = function(){
 			}
 		}
 	}
-};
+}
+
+document.addEventListener('readystatechange', iTimeHelper_init);
