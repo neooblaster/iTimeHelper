@@ -42,8 +42,8 @@
 /** ---     VERSION 1.1 : 26.07.2015                                                                             --- **
 /** ---     ------------------------                                                                             --- **
 /** ---         - Amélioration du script existant :                                                              --- **
-/** ---             > Suppression du conflit entre l'autocomplétion et de la suppresion du caractère 		     --- **
-/** ---             autocomplété																			     --- **
+/** ---             > Suppression du conflit entre l'autocomplétion et de la suppresion du caractère             --- **
+/** ---             autocomplété                                                                                 --- **
 /** ---             > Configuration du comportement par des attribut de configuration                            --- **
 /** ---             > Configuration automatique du pattern si demandé ou non spécifié si required                --- **
 /** ---             > Création du système "Toujours vrai" (never-wrong) qui corrige le champ si laissé faux      --- **
